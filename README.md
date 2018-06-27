@@ -150,3 +150,79 @@ View
 
 
     최초에는 함수 기반 뷰를 사용하는 것을 추천하며, 나중에 클래스 뷰로 구현 하는 것을 추천
+
+
+===================================================================================================
+ep5) Django Model 과 Model Fields
+
+클라이언트   response<---------|------------->request      서버
+                                                                      [SQL]
+                                                URLConf -> view -> 모델 <-> db
+                                                          ↓        [ORM: sql을 짜는 것이 아니라 코드로
+                                                                   데이터 베이스 사용이 간능하게 하는 것]
+                                                          템플릿
+
+1. 파이썬 클래스와 데이터베이스 테이블 매핑
+ Model : DB테이블 매핑 (엑셀의 워크시)
+ Model Instance : DB 테이블의 1Row (엑셀의 필드명 첫 줄과 같은 느낌!)
+ blog앱 Post모델 : blog_post 데이터베이스 테이블과 매핑 (저 테이블이 생성이 된다.)
+ blog앱 Comment모델 : blog_comment 데이터베이 테이블과 매핑
+
+2. 커스텀 모델 정의 (특정앱/model.py)
+ 데이터베이스 테이블 구조/타입을 먼저 설계를 한 다음에 모델 정의
+ 모델 클래스명은 단수형 (Posts 가 아니라 Post)
+
+ ex)
+ #blog/models.py
+ from django.db import models
+
+ class Post(models.Model):
+  title = models.CharField(max_length=100)
+  content = models.TextField()
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+테이블 생성
+python manage.py makemigrations blog #데이터 테이블 모델 생성
+python manage.py migrate blog # 모델을 데이터 베이스에 적용
+blog/admin.py에 내가 현재 만든 데이터베이스 등록 -> admin 페이지에서 확인 할 수 있다
+      -> from .models import Post ? geonil
+      -> admin.site.register(Post)
+
+
+## 자주 쓰는 필드 옵션
+1. null (DB옵션) : DB 필드에 NULL 허용 여부 (Default : False)
+2. unique (DB옵션) : 유일성 여부
+3. blank : 입력값 유효성 (validation)검사 시에 emplty 값 허용 여부 (Default : False)
+4. default : 디폴트 값 지정. 값이 지정되지 않았을 때 사용.
+   - 인자없는 함수 지정 가능. 함수 지정 시에는 매 리턴값이 필요할 때마다 함수를 호출하여 리턴값을 사용
+5. choices 사용법은 models.py참고
+6. validators : 입력값 유효성 검사를 수행할 함수를 다수 지정
+   - 각 필드마다 고유한 validators 들이 이미 등록되어있긷 함.
+   - ex) 이메일만 받기, 최대길이 제한, 최소길이 제한 ... 틍
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end
