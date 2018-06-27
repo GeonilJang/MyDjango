@@ -18,6 +18,7 @@ def lnglat_validator(value):
 
 
 class Post(models.Model):
+    author = models.CharField(max_length=20, verbose_name="작성자")
     title = models.CharField(max_length=100,
                              # choices=(
                              #     ('제목1','제목1 레이블'), #선택 박스를 넣어 줄 수 있다
