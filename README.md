@@ -243,16 +243,88 @@ python manage.py shell_plus --notebook 으로 실행
 
 
 ===================================================================================================
-ep8)
+ep8) Django admin
++ staff/superuser 계정에 한해 접근 가능
++ 모델클래스만 등록하면, 조희/추가/수정/삭제 웹 인터페이스가 제공
+
+ex)
+#blog/admin
+from django.contrib import admin
+from blog.models import Post
+
+#등록법 1
+admin.site.register(Post) @model만 등록하는 방법
+
+#등록법 2
+class PostAdmin(admin, ModelAdmin):
+    list_display= ['id','title','content'] #해당 어드민 페이지에서 값을 보여주고 싶을때
+admin.site.register(Post, PostAdmin) @model + 화면에 보여주고 싶은 클래스 같이 등록
+
+#등록법 3 : 장식자 형태로 지원
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+      list_display = ['id','title','content_size','geonil','updated_at']
+      list_display_links = ['title']
+      list_editale = ['title']
+      list_per_page = 4
+
+      # 추가할 목록의 항목을 추가해주고 그것을 정의해준후 정의하면된다.
+      def content_size(self, post):
+            return '{}글자'.format(len(post.content))
+        content_size.short_description = "글자수"
+        content_size.allow_tags = True
+
+      def geonil(self, post):
+            return '{}글자'.format(len("hell"))
+        geonil.short_description = "geonil"
+        geonil.allow_tags = True
+
+
+ModelAdmin OPTIONS
+
+1. 어드민 목록에서 변경될 부분을 수행하는 부부
+list_display : admin 목록에 보여질 필드목록.
+list_display_links : 목록 내에서 링크로 지정할 필드 목록 - 이를 지정하지 않으면, 첫번째 필드에만 인크가 적용
+list_editale : 목록상에서 수정할 필드 목록
+list_per_page : 디폴트 100 페이지 별로 보여줄 최대 갯수
+list_filter : 필터 옵션을 제공할 필드 목록
+actions : 목록에서 수행할 actions 목록  ->admin 목록페이지에 체크 박스/action 선택 기능을 만들 수 있다.
+ @admin Actions
+  대개 선택된 model instance 들에 대해 Bulk UPdate 용도구현
+   1. ModelAdmin 클래스내 맴버함수로 action함수를 구현
+      -> 맴버함수.short_description을 통해, action 설명 추가
+   2. ModelAdmin actions내에 등록
 
 
 
 
+2. 폼을 이용할시 수정이 가해지는 부분
+fields : add/change 폼에 노출할 필드 목록
+fieldset : add/change 폼에 노출할 필드 목록 (fieldset)
+formfield_overrides : 특정 form field에 대한 속정 재정의
+form : 디폴트로 모델 클래스에 대한 form class 지정
 
 
+옵션 사용 예)
 
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id','title','content_size','updated_at']
+    list_display_links = ['title']
+    list_editale = ['title']
+    list_per_page = 4
 
+    actions = ['make_published'] #d여기에 등록 2018-06-28
 
+    def content_size(self, post):
+        return '{}글자'.format(len(post.content))
+    content_size.short_description = "글자수"
+    content_size.allow_tags = True
+
+    def make_published(self, request, queryset): #admin에서 목록에 해당하는 작업을 한번에 실행 처리
+        updated_count = queryset.update(status='p') #choices 형이기 떄문에 가능한가????
+        self.message_user(request, '{}건 published'.format(updated_count))
+    make_published.short_description = '지정 포스팅을 Published상태로 변경'  # 함수의 이름으로 적용된 곳에 설명으로적용
 
 
 
