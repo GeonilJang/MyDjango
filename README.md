@@ -87,3 +87,66 @@ ep3)
   \d+ : \d+패터에 부합된다면
   <id>: id라는 변수명으로 인자를 넘기겠다. -> 뷰에서 사용할 함수의 인자값을 적어주는 것이다
   뷰의 인자로 넘겨받은 값들은 모두 문자열 타입입니다.
+
+===================================================================================================
+ep4)
+
+View
+ 1. URLConf에 매핑된 Callable Object
+  -> 첫 번째 인자로 HttpRequest 인스턴스를 받습니다.
+     + HttpRequest.GET + HttpRequest.POST + HttpRequest.COOKIES + HttpRequest.FILEs
+  -> 필히 HttpResponse 인스턴스를 리턴해야 합니다.
+ 2. 크게 Funtion Based View와 Class Based View 로 구분
+  ->
+   FBV 샘플예시
+   from django.http import HttpResponse
+
+   - 예시 1번 -
+   def post_list1(request):
+    'FBV : 직접 문자열로 HTML형식 응답하기'
+
+    name ="공유"
+    return HttpResponse("""
+    <h1>Hello geonil</h1>
+    <p>{name}</P>
+    <p>여러분의 친구가 되어 드리겠습니다.</p>
+    """.format(name=name))
+
+
+    - 예시 2번 - (render => 템플릿(HTML) 파일을 쓰다)
+    from django.http import HttpResponse
+    from django.shortcuts import render
+    def post_list2(request):
+      name = "공유"
+      response = render(request, "dojo/post_list.html", {"name":name})
+      return response
+
+    --> 라고 정의 해주면 아래는 예시 1번과 동일한 코드이지만 .html 파일을 만들어서 사용할 수 있다.
+    #dojo/post_list.html 에 name 이라는 파라미터의 값으로 name을 넘겨 주겠다.
+    <h1>Hello goenil</h1>
+    <p>{{name}}</p>
+    <p>여러분의 친구가 되어 드리겠습니다.</p>
+
+    ----- 나머지 예시는 views.py 에서 확인 가능 -----
+
+    CBV 샘플예시
+
+    1. django.views.generic
+     -> 뷰사용 패턴을 일반화 시켜놓은 뷰의 모음
+    2. .as_view() 클래스 함수를 통해 ,FBV를 생성해주는 클래스
+
+    class SampleTemplateView(object):
+      @classmethod
+      def as_view(cls, templates_name):
+        def view_fn(request):
+          return render(request, template_name)
+        return view_fn
+
+    fbv_view = SampleTemplateView.as_view('dojo/post_list2.html')
+
+
+    FBV에 해당하는 코드를 CBV로 만들어 보기위하여 vies_cbv.py 에서 작업 -> 이쪽으로 가서 확인을하는것이
+    이해도를 높이는데 좋을것으로  판단됩니다.
+
+
+    최초에는 함수 기반 뷰를 사용하는 것을 추천하며, 나중에 클래스 뷰로 구현 하는 것을 추천
