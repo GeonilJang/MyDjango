@@ -326,9 +326,19 @@ class PostAdmin(admin.ModelAdmin):
         self.message_user(request, '{}건 published'.format(updated_count))
     make_published.short_description = '지정 포스팅을 Published상태로 변경'  # 함수의 이름으로 적용된 곳에 설명으로적용
 
+    def make_Draft(self, request, queryset): #admin에서 목록에 해당하는 작업을 한번에 실행 처리
+        updated_count = queryset.update(status='d')
+        self.message_user(request, '{}건 Draft'.format(updated_count))
+    make_Draft.short_description = '지정 포스팅을 Draft 상태로 변경'
+
+    def make_withdraw(self, request, queryset): #admin에서 목록에 해당하는 작업을 한번에 실행 처리
+        updated_count = queryset.update(status='w')
+        self.message_user(request, '{}건 Withdraw'.format(updated_count))
+    make_withdraw.short_description = '지정 포스팅을 Withdraw 상태로 변경'
 
 
-
+===================================================================================================
+ep9)
 
 
 

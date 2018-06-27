@@ -18,21 +18,18 @@ from django.utils.safestring import mark_safe
 # #등록법 3 : 장식자 형태로 지원
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['id','title','status','content_size','geonil','updated_at']
+    list_display = ['id','title','status','content_size','feeling','updated_at']
     list_display_links = ['title']
     list_editale = ['title']
     list_per_page = 4
-    actions = ['make_published','make_Draft','make_withdraw'] #d여기에 등록 2018-06-28
+    actions = ['make_published','make_Draft','make_withdraw','geonil_good','geonil_sad','geonil_bad'] #d여기에 등록 2018-06-28
 
     def content_size(self, post):
         return mark_safe('<strong>{}</strong>글자'.format(len(post.content)))
     content_size.short_description = "글자수"
     # content_size.allow_tags = True
 
-    def geonil(self, post):
-      return mark_safe('{}글자'.format(len("hell")))
-      #return '{}글자'.format(len("hell"))
-    geonil.short_description = "geonil"
+
     # geonil.allow_tags = True --->mark_safe 를 사용한 방법을 권장합니다.
 
     def make_published(self, request, queryset): #admin에서 목록에 해당하는 작업을 한번에 실행 처리
@@ -49,3 +46,18 @@ class PostAdmin(admin.ModelAdmin):
         updated_count = queryset.update(status='w')
         self.message_user(request, '{}건 Withdraw'.format(updated_count))
     make_withdraw.short_description = '지정 포스팅을 Withdraw 상태로 변경'
+
+    def geonil_good(self, request, qeuryset):
+        updated_count = qeuryset.update(feeling='g')
+        self.message_user(request, '{}건 좋음'.format(updated_count))
+    geonil_good.short_description = '좋음'
+
+    def geonil_sad(self, request, qeuryset):
+        updated_count = qeuryset.update(feeling='s')
+        self.message_user(request, '{}건 슬픔'.format(updated_count))
+    geonil_sad.short_description = '슬픔'
+
+    def geonil_bad(self, request, qeuryset):
+        updated_count = qeuryset.update(feeling='b')
+        self.message_user(request, '{}건 나쁨'.format(updated_count))
+    geonil_bad.short_description = '나쁨'
