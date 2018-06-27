@@ -221,12 +221,29 @@ id 필드란?
 장고에서는 기본키로서 id 필드 (auto field)가 기본 지정
 기본키는 줄여서 "pk"로도 접근가능 (primary key)
 
+===================================================================================================
+ep7) Django Shell
++ 장고 프로젝트 설정이 로딩된 파이썬 쉘
+ -> 쉘> python manage.py shell
++ 일반 파이썬 쉘을 통해서는, 그냥 장고 환경에 접근 불가
+ ->tip ipython이 설치 되어있다면, ipython으로 쉘이 구동
+ ->jupyter notebook 과 함께 설치 됩니다.
+
+ Post 모델을 통한 데이터 베이스에 등록한 정보를 가저오는 방법
+1.
+from blog.models import Post
+Post.objects.all().count()
+for post in Post.objects.all():
+  print(post.id, post.title)
+
+장고 쉘을 이용한 쥬피터 노트북사용법
+pip install django-extension
+setting.py django_extensions 등록
+python manage.py shell_plus --notebook 으로 실행
 
 
-
-
-
-
+===================================================================================================
+ep8)
 
 
 
