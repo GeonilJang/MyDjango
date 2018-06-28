@@ -21,7 +21,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['id','title','status','content_size','feeling','updated_at']
     list_display_links = ['title']
     list_editale = ['title']
-    list_per_page = 4
+    list_per_page = 100
     actions = ['make_published','make_Draft','make_withdraw','geonil_good','geonil_sad','geonil_bad'] #d여기에 등록 2018-06-28
 
     def content_size(self, post):
@@ -61,3 +61,9 @@ class PostAdmin(admin.ModelAdmin):
         updated_count = qeuryset.update(feeling='b')
         self.message_user(request, '{}건 나쁨'.format(updated_count))
     geonil_bad.short_description = '나쁨'
+
+
+    # def geonil_test(self, request, qeuryset):
+    #     updated_count = qeuryset.update(title='제목2')
+    #     self.message_user(request, '{}건 변경'.format(updated_count))
+    # geonil_test.short_description = '제목변경'

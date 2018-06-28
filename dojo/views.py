@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
+
 import os
 #지정경로 장고 이용하여 정의하기
 from django.conf import settings

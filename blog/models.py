@@ -43,3 +43,9 @@ class Post(models.Model):
     feeling = models.CharField(max_length=1, choices=STATUS_CHOICES2, default='g', verbose_name="기분")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+      ordering = ['-id'] #id로 내림 차순 정렬을 기본으로 정렬하겠다. [안에 여러 조건을 줄 수는 있지만 1가지 조건을사용하는 것을 추천]
+
+    def __str__(self):
+        return self.title

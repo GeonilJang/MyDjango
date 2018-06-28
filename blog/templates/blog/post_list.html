@@ -10,6 +10,27 @@
     <p>
       http://bc6f5308.ngrok.io
     </p>
+
+
+  <form action="" method="get">
+    <input type="text" name="q" value="">
+    <input type="submit" name="" value="검색">
+  </form>
+
+
+
+  <ul>
+    {% for post in post_list %}
+    <li>
+      {{post.id}}
+      {{post.title}}
+      <small>by {{post.author}}</small>
+      <small>at {{post.updated_at}}</small>
+    </li>
+    {% endfor%}
+  </ul>
+
+
     <ul>
       <li>1번째 ~~~~~~~~~~~~</li>
       <li>2번째 ~~~~~~~~~~~~</li>
