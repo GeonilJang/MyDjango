@@ -1,5 +1,9 @@
 "# MyDjango"
 
+
+pip install -r requirements.txt 통하여 한번에 사용 라이브러리들을 설치 할수 있습니다.
+
+
 ep1)
 1) 프로젝트 생성
 django-admin startproject 프로젝트명
@@ -515,35 +519,90 @@ qeuryset.delete()
 
 Delete from blog_post
 
-#웹서비스, 각요청 반응속도에서 병목
-+ 데이터베이스 : 아주 중요
- -> db로 전달 / 실행되는 sql 갯수를 줄이고 각 sql의 성능/처리속도 최정화가 필요
-+ 로직의 복잡도 : 중요
-+ 프로그래밍 언어의 종류 : 대개는 미미
-
--> django-debug-toolbar 설치 (처리속도를 쉽게 확인 할 수 있도록 도와주는 tool)
-  + 현재 request/response에 대한 다양한 디버깅 정보를 보여줍니다.
-  + SQLPanel을 통해 각요청 처리 시에 발생한 SQL내영 확인 가능
-  + 웹 서비스 성능과 직결 = 응답속도
-
-
-1) pip install django-debug-toolbar
-2) INSTALLED_APPS = [, "debug_toolbar"] #settings에 추가
-   MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"]
-   INTERNAL_IPS = ["127.0.0.1"]
-
-settings.py
-import dajngo.conf import settings
-   if settings.DEBUG:
-       import debug_toolbar
-       urlpatterns +=[
-           url(r'^__debug__/',include(debug_toolbar.urls))
-       ]
 
 
 
+########################################################################################################
+ep10) Http Status code 404
+
+HTTP Status Code
+웹 서버는 적절한 상태코드로서 응답해야합니다.
+
+대표적 http 응답 상태 코드
+200 : 성공
+302 : 임시 url로 이동했다. (Redirect)
+404 : 서버가 요청한 페이지를 찾을 수 없음.(Not Found)
+500 : 서버 오류 발생 (Server Error)
+
+#200응답
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import render
+
+def view1(request):
+   return HttpResponse('안녕하세요.')
+
+def view2(request):
+   return render(request, 'tamplate.html')
+
+def view3(reqeust):
+   return JsonResponse({"hello":'world'})
 
 
+#302응답
+from django.http import HttpResponseRedirect
+from django.shortcuts imrpot redrict, resolve_url
+
+def view1(request):
+    return HttpResponseRedirect('/blog/')
+
+def view2(request):
+    url = resolve_url('blog:post_list')  #후에 배울 url Reverse 적용
+    return HttpResponseRedirect(url)
+
+def view3(request):
+    return redirect('blog:post_list')
+
+#404응답
+from django.http imrpot Http404, HttpResPonseNotFound
+from django.shortcuts import get_object_or_404
+
+def view1(request):
+    raise Http404 #Exception class
+
+def view2(request):
+    post = get_object_or_404(Post, id=100) # 없는 id에 접근할 경우 Http404예외 발생
+
+def view3(request):
+    return HttpResPonseNotFound() # 잘사용하지 않는 방법
+
+
+##### views.py에 아래 함수 등록하여 404 에러 처리    
+    def post_detail(request, id):
+
+        post = get_object_or_404(Post, id=id) # 아래 4줄과 동일한 1줄이다
+        # try:
+        #     post = Post.objects.get(id=id)
+        # except Post.DoesNotExist:
+        #     raise Http404
+
+
+        return render(request, 'blog/post_detail.html',{
+            'post':post,
+        })
+
+
+
+
+#500응답
+from blog.models import POST
+
+def view1(request):
+    name = ['tom','steve'][100]
+    #생략
+
+def view2(request):
+    post = Post.objects.get(id=100) #없는 id에 접근할 경우 Post.DoesNotExist예외가 발생
+    #생략
 
 
 
