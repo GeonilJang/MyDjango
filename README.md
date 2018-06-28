@@ -607,6 +607,83 @@ def view2(request):
 
 
 
+#### 현재까지
+post_list 를 통하여 데이터베이스의 값을 화변에 보여줬고
+post_detail 을 통하여 post_list 에서 보여지고 있는 목록을 통하여 데이터베이스 값을 보여주는 페이지 처리및
+404에러 발생시 처리 방법에 대하여 배웠다.
+
+
+
+
+
+
+
+
+
+########################################################################################################
+ep11) Model Relationship Fields
+
+포스팅과 댓글, 포스팅과 글쓴이, 포스팅과 카케고리 등의 정보를 관계형데이터베이스에 넣기 위해서는
+Relation에 대한 이해가 필요하다.
+
+외래키 - 1:n 관계를 표현
+Many to ManyFiled - m:n관게
+ - 중간 테이블이 생성되며, ForeingKey 관계로 참조
+One to OneField - 1:1관계
+
+데이터베이스 정규화
+
+_정규화 : rdbms 설계에서 중복을 최소화 하게 데이터를 구조화 하는 프로세스
+_충분히 정규화 하지 않는다면, 중복 정보가 복수 개의 Row/Column에 혼재 : Record 갱신/삭제 시에
+ _관련되 Row/Column에 대해서 처리 되지 않을경우, 논리적 모순 발생
+ _ 경우에 따라 비정규화 과정 필요
+
+__
+
+ex)
+#코멘트 모델 추가
+1:n - 포스팅과 댓글 ( 한 개의 포스팅과 여러개의 댓글)
+
+from jango.db import models
+class Post(models.Model):
+  title = models.CharField(max_length=100)
+  content = models.TextField()
+
+class Comment(models.Model):
+  post = models.ForeingKey(Post) #Point!!!!
+  message = models.TextField()
+
+_실제 아래와 같이 적용 시켜두었다.
+class Comment(models.Model):
+    post = models.ForeignKey(Post) # post 모델에 대한 외래키로 쓰겠다.
+    author = models.CharField(max_length=20)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+__
+
+외해키 사용은 아래와 같이 사용할 수 있다.
+#post_detail.html
+{%for comment in post.comment_set.all%}
+<ol>
+  <li>
+  {{comment.message}}
+    작성자 : {{comment.author}}
+    <small>작성시간 : {{comment.update_at}}</small>
+  </li>
+</ol>
+{%endfor%}
+
+
+릴레이션 걸기위해서
+Tag set 을만들기 위하여 Post 모델에 추가헤주고 Tag 클래스도 생성
+
+Post.objects.filter(tag_set__name="django")
+post.objects.filter(tab_set__name__in=['django','python'])
+
+
+
+
 
 
 

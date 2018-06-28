@@ -9,5 +9,19 @@
   <p>{{post.content|linebreaks}}</p>
   <small>by {{post.author}}</small>
   <small>at {{post.updated_at}}</small>
+
+  <hr>
+  <h3>Comment</h3>
+  {%for comment in post.comment_set.all%}
+  <ol>
+    <li>
+    {{comment.message}}
+      작성자 : {{comment.author}}
+      <small>작성시간 : {{comment.update_at}}</small>
+    </li>
+  </ol>
+  {%endfor%}
+
+
   </body>
 </html>

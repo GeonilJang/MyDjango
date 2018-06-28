@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, Comment, Tag
 
 from django.utils.safestring import mark_safe
 
@@ -22,7 +22,8 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = ['title']
     list_editale = ['title']
     list_per_page = 100
-    actions = ['make_published','make_Draft','make_withdraw','geonil_good','geonil_sad','geonil_bad'] #d여기에 등록 2018-06-28
+
+    actions = ['delete_selected_post','make_published','make_Draft','make_withdraw','geonil_good','geonil_sad','geonil_bad'] #d여기에 등록 2018-06-28
 
     def content_size(self, post):
         return mark_safe('<strong>{}</strong>글자'.format(len(post.content)))
@@ -31,6 +32,12 @@ class PostAdmin(admin.ModelAdmin):
 
 
     # geonil.allow_tags = True --->mark_safe 를 사용한 방법을 권장합니다.
+
+    #여기서의 쿼리셋은 선택한 현재의 row 값만을 많한다.
+    def delete_selected_post(self, request, queryset):
+        updated_count = queryset.delete()
+        self.message_user(request, '{}건 삭제'.format(updated_count[0]))
+    delete_selected_post.short_description ="삭제"
 
     def make_published(self, request, queryset): #admin에서 목록에 해당하는 작업을 한번에 실행 처리
         updated_count = queryset.update(status='p')
@@ -67,3 +74,28 @@ class PostAdmin(admin.ModelAdmin):
     #     updated_count = qeuryset.update(title='제목2')
     #     self.message_user(request, '{}건 변경'.format(updated_count))
     # geonil_test.short_description = '제목변경'
+
+
+
+
+
+
+##########comments 등록
+@admin.register(Comment)
+class CommetAdmin(admin.ModelAdmin):
+    list_display = ['id','author','message','update_at']
+    list_display_links = ['message']
+    actions = ['delete_selected_post']
+    def delete_selected_post(self, request, queryset):
+        updated_count = queryset.delete()
+        self.message_user(request, '{}건 삭제'.format(updated_count[0]))
+    delete_selected_post.short_description ="삭제"
+
+
+
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    
