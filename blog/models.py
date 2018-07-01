@@ -1,8 +1,8 @@
-from django.db import models
-from django.forms import ValidationError
 import re
 from django.conf import settings
-
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.forms import ValidationError
 
 
 # Create your models here.
@@ -38,7 +38,7 @@ class Post(models.Model):
                              #     ('제목3','제목3 레이블'),
                              #     )
                              verbose_name="제목", help_text='포스팅 제목을 입력해주세요. 최대 100자 내외.') #길이제한
-    content = models.TextField(verbose_name="내용") #길이제한 없음
+    content = models.TextField(verbose_name="내용" ) #길이제한 없음
     tags = models.CharField(max_length=100, blank=True)
     lnglat = models.CharField(max_length=50, validators = [lnglat_validator] ,help_text="경도/위도 포맷으로 입력." ,blank=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES1, default='d') #2018-06-28
@@ -52,6 +52,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', args = [self.id] )
 
 
 class Comment(models.Model):

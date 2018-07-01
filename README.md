@@ -778,6 +778,137 @@ message=render_to_string('accounts/signup_welcome.txt',{"name":"geonil","when":"
 
 ########################################################################################################
 ep14)URL Reverse
+urls.py변경만으로 "각 뷰에대한 url"이 변경되는 유연한 url시스템
+
++ 개발자가 일일이 url을 계산하지 않아도 됩니다.
+  url이 변경되더라도, url reverse가 변경된 url을 추척 누락될 일이 없다.
+
+
+url -> 뷰 함수
+~ URLReverse 개년 url이 변경되도 뷰 함수는 변경되지 않도록 하기위해서
+
+URL이 변경될 때마다 , 이 url 을 참조하고 있는 코드를 일일이 찾아서 변경하느 것은 너무 번거롭고, 수정건을 누락시킬 여지도 많다.!!! 그래서
+
+urls.py -> urlpatterns 에  name을 만들어 준다.
+
+urlpatterns = [
+    url(r'^$', views.post_list, name="post_list"),
+    url(r'^detail/(?P<id>\d+)/$', views.post_detail, name="post_detail"),
+]
+
+
+<a href="{% url "post_detail" post.id %}">{{post.title}}</a>
+<!-- <a href="/blog/detail/{{post.id}}">{{post.title}}</a> -->
+
+위에 처럼 사용하는 것은 project urls 에 namespace를 안쓸경우 사용이 가능 한 방법이고
+urlspace를 사용하게 되요 앞에 앱이름 blog: 를 붙여 줘야한다
+
+<a href="{% url "blog:post_list" %}">글 목록</a>
+    <a href="{% url "blog:post_detail" post.id %}">{{post.title}}</a>
+
+
+_최초 진입 url 설정하기__
+프로젝트 urls 에서해줌
+
+
+namsepace 를 사용하는 이유는 중복을 피하기 위해서 사용하는 것이다
+중복이 없다면 name 만으로 사용해도 문제가 없을 것을 보입니다.  
+
+
+모델.py
+아래 코드를 추가 해줌으로 조금더 쉽게 데이터를 가져올 수 있다.
+def get_absolute_url(self):
+      return reverse('blog:post_detail',args=[self.id])
+
+위의 함수를 구현을 해두 었다면
+
+createView/ UpdateView에 success_url을 제공하지 않을 경우,
+해당 모델인스턴스의 get_absolute_url주소로 이동이 간으한지 체크하고, 이동이 가능할 경우 이동.
+* 글 작성후 작성을 확인 페이지로 자동으로 페이지 전환이 이루어짐 (이동페이지 정하지 않았을 경우)
+
+
+blog에 view_cbv 만들어서 실습
+
+
+
+
+
+
+########################################################################################################
+ep15)URL Reverse
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
