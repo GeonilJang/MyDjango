@@ -2,8 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.db.models import Q
 from django.http import Http404
+from django.conf import settings
+
 # Create your views here.
 def post_list(request):
+    
     qs = Post.objects.all()
 
     q = request.GET.get('q','')  #-> 해당 함수 호출 될 때 파라미터 q에 해당 하는 값이 있다면 값을 가져와라
@@ -27,8 +30,6 @@ def post_detail(request, id):
     #     post = Post.objects.get(id=id)
     # except Post.DoesNotExist:
     #     raise Http404
-
-
     return render(request, 'blog/post_detail.html',{
         'post':post,
     })

@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ValidationError
 import re
+from django.conf import settings
 
 
 
@@ -28,7 +29,8 @@ class Post(models.Model):
         ('b', 'Bad'),
         ('s', 'Sad'),
     )
-    author = models.CharField(max_length=20, verbose_name="작성자")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    #author = models.CharField(max_length=20, verbose_name="작성자")
     title = models.CharField(max_length=100,
                              # choices=(
                              #     ('제목1','제목1 레이블'), #선택 박스를 넣어 줄 수 있다
@@ -40,7 +42,7 @@ class Post(models.Model):
     tags = models.CharField(max_length=100, blank=True)
     lnglat = models.CharField(max_length=50, validators = [lnglat_validator] ,help_text="경도/위도 포맷으로 입력." ,blank=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES1, default='d') #2018-06-28
-    tag_set = models.ManyToManyField('Tag')
+    tag_set = models.ManyToManyField('Tag', blank=True)
     feeling = models.CharField(max_length=1, choices=STATUS_CHOICES2, default='g', verbose_name="기분")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

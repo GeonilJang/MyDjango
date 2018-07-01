@@ -684,24 +684,54 @@ post.objects.filter(tab_set__name__in=['django','python'])
 
 
 
+1:1 User 와 Profile
+account 앱생성
+
+프로필 모델 생성 및 등록
+class Profile(models.Model):
+    user = models.OneToOneField(User)
+    phone_nuber = models.CharField(max_length=20)
+    address = models.CharField(max_length=50)
 
 
 
 
 
+Foreignkey를 이용하여 만들었던 comment 모델에서 데이터를 가저오는 방법
+1) Comment 모델의 구성은?? -> blog.models.Comment 로 만들어 졌네
+2) comment = Comment.objects.first()  -> Comment: Coment object
+3) comment.post 로 가져올 수 있다.
+
+모델 사용 추천 방식을 사용하기 위해서 account -> models.py 에서 수정
+
+//
+_ForeignKey.on_delete 옵션
+# #1측의 Row가 삭제될 경우, N측의 Row의 처리에 대한 동작을 지정 # #
+Cascade: 연뎔된 Row를 일괄 삭제 (디폴트 동작)
+Protect : ProtectError 예외를 발생시키며, 삭제 방지
+SET_NULL : null = True 설정이 되어있을 때, 삭제되면 해당 필드를 null설정
+SET_DEFAULT : 필드에 지정된 디폴트 값을 설정__
 
 
+그러니까)
+1) post 포린키로 만들었으니까 댓글을 달기위해서는 해당 post를 들고 와야한다.
+-> post = Post.objects.get(id=3) #3번 포스팅을 가져오고
+2) comment = post.comment_set.all() # 포린키로 연결된 값을 다 들고 온다.
+2-1 ) Comment.objects.create(post=post, author="geonil", message="댓글") #위에서 들고온 3번 포스팅에 값을    추가 하겠다.
+3)
 
+########################################################################################################
+ep12) 장고 템플릿 상속
 
+여러 템플릿 파일 별로 필연적으로 발생하는중복을 상속을 통해 중복 제거 상속은 여러번 이루어 질 수 있다.
 
+부모 템플릇은 전체 레이아웃을 정의하며, 자식 템플릿은 재정의할 block을 다수 정의해야 한다.
 
+자식 템플릿은 부모 템플릿을 상속받은 후에 부모 템플릿의 _block__
+역역에 대해서 재정의만 가능 하며 그외 코드는 무시
 
-
-
-
-
-
-
+_템플릿 상속 문법 : 항시 자식템플릿 코드 내, 최상단에 쓰여져야 합니다.__
+{% extends "부모템플릿 경로 "%}
 
 
 

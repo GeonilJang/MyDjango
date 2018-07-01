@@ -5,19 +5,22 @@
     <title>{{post.title}}</title>
   </head>
   <body>
+    <!-- 여기는 작성글  -->
   <h1>{{post.title}}</h1>
   <p>{{post.content|linebreaks}}</p>
   <small>by {{post.author}}</small>
   <small>at {{post.updated_at}}</small>
 
   <hr>
+  <!-- 여기는 댓글. -->
   <h3>Comment</h3>
   {%for comment in post.comment_set.all%}
   <ol>
     <li>
-    {{comment.message}}
+      {{comment.message}}
       작성자 : {{comment.author}}
       <small>작성시간 : {{comment.update_at}}</small>
+      <small>해당글 : {{comment.post}}</small>
     </li>
   </ol>
   {%endfor%}
