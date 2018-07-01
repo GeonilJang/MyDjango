@@ -6,9 +6,8 @@ from django.conf import settings
 
 # Create your views here.
 def post_list(request):
-    
-    qs = Post.objects.all()
 
+    qs = Post.objects.all()
     q = request.GET.get('q','')  #-> 해당 함수 호출 될 때 파라미터 q에 해당 하는 값이 있다면 값을 가져와라
     if q:
         qs = qs.filter( Q(title__icontains=q) | Q(content__icontains=q) )

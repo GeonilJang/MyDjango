@@ -1,34 +1,25 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name='viewport' content='width=device-width' />
-    <title></title>
-  </head>
-  <body>
-    <h1>안녕하세요</h1>
-    <p>
-      http://bc6f5308.ngrok.io
-    </p>
+{% extends "blog/layout.html" %}
 
+{% block title %}
+  {{post.title}}
+{% endblock %}
 
+{% block content %}
+  <p>
+    http://bc6f5308.ngrok.io
+  </p>
   <form action="" method="get">
-    <input type="text" name="q" value="">
-    <input type="submit" name="" value="검색">
+  <input type="text" name="q" value="">
+  <input type="submit" name="" value="검색">
   </form>
-
-
-
   <ul>
-    {% for post in post_list %}
-    <li>
-      {{post.id}}
-      <a href="{{post.id}}">{{post.title}}</a>
-      <small>by {{post.author}}</small>
-      <small>at {{post.updated_at}}</small>
-    </li>
-    {% endfor%}
+  {% for post in post_list %}
+  <li>
+    {{post.id}}
+    <a href="{{post.id}}">{{post.title}}</a>
+    <small>by {{post.author}}</small>
+    <small>at {{post.updated_at}}</small>
+  </li>
+  {% endfor%}
   </ul>
-  
-  </body>
-</html>
+{% endblock %}
