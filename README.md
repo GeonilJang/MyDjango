@@ -739,6 +739,53 @@ _템플릿 상속 문법 : 항시 자식템플릿 코드 내, 최상단에 쓰�
 
 프로젝트 밑에 templates 폴더를 만들어서 거기서 레이아웃을 관리 하는 것을 추천한다
 
+########################################################################################################
+ep13) Djanog Template Loader
+
+다수 디렉토리 목록에서 지정 상태결로를 가지는 템플릿을 찾음
+
++ app_directories.Loder 와 filesystem.Loader 위 Loade를 통해, 템플릿 디렉토리가
+있을 후보 디렉토리 리스트를 작성 합니다. 이는 장고 서버 초기 시작 시에만 1회 작성됩니다.
+
+
+주로 아래 함수를 통해 Template파일들을 활용합니다.
+reder 템플릿을 렌더링은 문자열로 HttpResponse 객체를 리턴
+reder to string 템플릿 렌더링한 문자열을 리턴
+
+response = render(request, "blog/post_list.html", context_params)  -   HttpResponse
+welcome_message = render_to_string('accounts/signup_welcome.txt', context_params) string
+
+# app_directories.Loader
+-> settings.INSTALLED_APPS에 설정된 앱 디렉토일 내 templates 경로 에서 템플릿 파일을 찾습니다.
+
+앱 디렉토리 별로 각 앱을 위한 템플리 파일을 위치
+- blog앱용 템플릿은 blog/templates/ 경로에 두는 것이 관리성이 좋다.
+
+
+#filesystem.Loader 프로젝트 레벨에 템플릿을 사용하기 위해 아래처럼 'settings.py 에 등로'
+'DIRS': [
+        os.path.join(BASE_DIR,"Django_Geonil_Web","templates"),
+    ],
+
+
+
+
+from django.template.loader import render_to_string
+render_to_string('accounts/signup_welcome.txt')
+message=render_to_string('accounts/signup_welcome.txt',{"name":"geonil","when":"2018-07-02"})
+
+
+
+########################################################################################################
+ep14)URL Reverse
+
+
+
+
+
+
+
+
 
 
 
