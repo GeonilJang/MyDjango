@@ -6,25 +6,32 @@
 
 {% block content %}
 <!-- 여기는 작성글  -->
-<h2>{{post.title}}</h2>
-<p>{{post.content|linebreaks}}</p>
-<small>by {{post.author}}</small>
-<small>at {{post.updated_at}}</small>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{post.title}}</h2>
+      <p>{{post.content|linebreaks}}</p>
+      <small>by {{post.author}}</small>
+      <small>at {{post.updated_at}}</small>
 
-<hr>
-<!-- 여기는 댓글. -->
-<h3>Comment</h3>
-{%for comment in post.comment_set.all%}
-<ol>
-<li>
-  {{comment.message}}
-  작성자 : {{comment.author}}
-  <small>작성시간 : {{comment.update_at}}</small>
-  <small>해당글 : {{comment.post}}</small>
-</li>
-</ol>
-{%endfor%}
-<hr>
-<a href="{% url "root" %}">글 목록</a>
+      <hr>
+      <!-- 여기는 댓글. -->
+      <h3>Comment</h3>
+      {%for comment in post.comment_set.all%}
+      <ol>
+      <li>
+        {{comment.message}}
+        작성자 : {{comment.author}}
+        <small>작성시간 : {{comment.update_at}}</small>
+        <small>해당글 : {{comment.post}}</small>
+      </li>
+      </ol>
+      {%endfor%}
+      <hr>
+      <a href="{% url "blog:post_list" %}" class="btn btn-primary">글 목록</a>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}
