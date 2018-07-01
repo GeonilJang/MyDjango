@@ -8,7 +8,7 @@
 
 
 <div class="container">
-  <div class="jumbotron">
+  <div class="jumbotron text-center">
     <h1>Geonil's Blog <sub>By geonil</sub></h1>
     <p>여러분의 친구 건일</p>
     <p>
@@ -21,19 +21,20 @@
           http://bc6f5308.ngrok.io
       </div>
 
-      <p>
+      <div class="">
         <form action="" method="get">
           <input type="text" name="q" value="" >
           <input type="submit" name="" value="검색" class="btn btn-primary">
         </form>
-      </p>
+        <a href="{% url "blog:post_new" %}" class="pull-left" style="float:right">글 작성</a>
+      </div>
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>athor</th>
-            <th>update_at</th>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>수정일</th>
           </tr>
         </thead>
         <tbody>
