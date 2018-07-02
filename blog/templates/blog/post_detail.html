@@ -11,7 +11,7 @@
     <div class="col-sm-12">
       <h2>{{post.title}}</h2>
       <p>{{post.content|linebreaks}}</p>
-      <small>by {{post.author}}</small>
+      <small>by {{post.user}}</small>
       <small>at {{post.updated_at}}</small>
 
       <hr>
@@ -29,6 +29,7 @@
       {%endfor%}
       <hr>
       <a href="{% url "blog:post_list" %}" class="btn btn-primary">글 목록</a>
+      <a href="{% url "blog:post_edit" post.id %}" class="btn btn-default">수정하기</a>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
 
@@ -19,7 +19,8 @@ def post_new(request):
             post = Post()
             post.title = form.cleaned_data['title']
             post.content = form.cleaned_data['content']
-            post.save()"""
+            post.save()
+            """
 
             """방법2)post = Post(title=form.cleaned_data['title'],content=form.cleaned_data['content'])
             post.save()"""
@@ -30,7 +31,9 @@ def post_new(request):
 
 
             """방법4)post = Post.objects.create(**form.cleaned_data) 방법4를응용 """
-            post = form.save()
+            post = form.save(commit=False)  #지연시키는 방법
+            post.ip = request.META['REMOTE_ADDR']
+            post.save()
 
             return redirect('/dojo/') #namespace:name
     else:
@@ -38,6 +41,38 @@ def post_new(request):
     return render(request, 'dojo/post_form.html',{
         'form':form
     })
+
+
+def post_edit(request, id):
+    post = get_object_or_404(Post, id=id) #해당 id에 해당하는 객체를 가져와라
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.ip = request.META['REMOTE_ADDR']
+            post.save()
+
+            return redirect('/dojo/')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'dojo/post_form.html',{
+        'form':form
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
