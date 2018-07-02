@@ -836,31 +836,151 @@ ep15)부트 스트렙3
 12칸 grid system
 다양한 써드 파티
 
+########################################################################################################
+ep16) 장고 템플릿 엔진 TAG
+Fat Model
+stupid Template
+Thin View
+
+_장고 템플릿 엔진에서의 for 문
+
+{% for row in rows %}
+  <tr>
+    {% for name in row %}
+    <td>{{name}}</td>
+    {% endfor %}
+  </tr>
+{% endfor %}
+
+__
+
+people = {"tom"L10, "steve":10}
+call Person(object):
+  def say_hello():
+    print("hello world")
+
+person = Person()
+
+#python
+people['tom']
+person.say_hello()
+
+#template engine 모든 어트리 뷰트를 .으로 접근한다.
+{{people.tom}} -> 이렇게 사용하는 것을 지원한다.
+{{person.say_hello}}
+
+
+########################################################################################################
+ep17) 장고 템플릿 엔진 filter
+
++ 템플린 변수값 변환을 위한 함수 이며, 다수 필터 함수를 연결가능
+ {{var|filter1}},{{var|filter2:인자}},{{var|filter3:인자|filter4}}
+
++ 빌트인 filter가 지원되며, 장고앱 별로 커스텀 Filter추가 가능
+|앞에가 1번째 인자 : 뒤에가 2번째 인자 -> | 를 기준으로  
+
+len(value) = {{value | length}}
+             {{ value | linebreaks}}  -> <p>
+           = {{ value | random}} -> value = [1,2,3,4,5]
+             {{ safe fileter }}
+             {{ html | safe }} -> 자바스크립트 같은 동작을 안전하게
+             {{ some_list | slice ":2"}}
+             {{ value1 | truncatechars : 9}} 아홉글자 뒤에 ....
+             {{ value | urlencode }} get / post
 
 
 
+########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
+ep18) html form
+
+HTML- 웹 페이지에서는 FORM태그를 통해, 데이터를 전송
+
+EX) 로그인 폼, 댓글 폼
+
+하나의 FORM태그는 하나 이상의 위젯(Widget)을 가진다. 하나의 ui 구성요서
+<form action="" method="post">
+  <input type="text">
+  <textarea></textarea>
+  <select></select>
+  <input type="checkbox">
+  <input type="raido">
+  그 외 다수 위젯
+</form>
 
 
 
+Action
+Method get : 주로 데이터 조회시 요청  header 만
+       post: 파괴적인 핵션(생성/수정/삭제)에 대한 요청 시 header + body
+
+enctype : request.POST
+ -> application/x-www-form-urlencode(디폴트)
+ -> multipart/form-data : 파일 업로드 가능
+ -> text/plain: 스펙에는정의 되어있으나 실제로는 사용하지 않음.
+
+url encoded란?
+key=value 값의 쌍이 &문자로 이어진 형태
+
+from urllib.parse import urlencode
+urlencode({'key1':'value1'})
+
+
+_form method
+Get 방식 : 엽서에 비유. 물건을 보낼 수 없다.
+
+Post 방식 : 택배에 비유. 다양한 물건을 보낼 수 있다.
+    -> get/post 인자가능
+    -> 지정된 enctype으로 인코딩하여, body에 포함 시켜 처리
+
+    head GET POST
+
+    body POST__
 
 
 
+########################################################################################################
+########################################################################################################
+ep19) CSRF   Cross-site requests forgery
+사이트 간 요청 위조 공-> 사용자가 의도하지 않게 게시판에글을 작성하거나, 쇼핑을 하게 하는등의 공격
 
+공격을 맞기 위하여 csrf token 발급을 한다.
+{% csrf_token %} -> input hidden name="csrf_token~~" value="0asjd0as9dj234c09-8m345c834c84c3"
 
+get으로 접근해서 post로 등록을 한다.
+get단계에서 토큰을발급! 저장할때 post로 보낸다. -> 유효하면/ 그제서야 뷰를 호출 해준다. 안맞으면 403 포비든을 응답한다.
 
+API뷰와 같은
+특정 뷰에한해 csrf token 을 해제하기위해서는 csrf_exempt 를해준다.
 
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def my_view(request):
+  return HttpResponse('Hello world')
 
+########################################################################################################
+########################################################################################################
+ep20) httprequest httpresponse 에대해서
 
+HttpRequest
++ 클라이언로부터의 몬든 요청 내용을 담고 있으며, 매 요청 시마다 뷰함수의 첫번째인자로 전달.
 
+HttpRequest objects에서 폼 처리 관련속성들
+  -> request.Method : get or post
+  -> request.GET : get 인자, queryDict 타입 get/post
+  -> request.POST : post 인자 , queryDict 타입 post 요청시
+  -> request.Fields : post 업로드 파일 인자 MultiValueDict 타입
 
+  fbc : request
+  cbv : self.request
 
-
-
-
-
-
-
-
+########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
+ep21) 장고폼
 
 
 
