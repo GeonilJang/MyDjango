@@ -980,18 +980,43 @@ HttpRequest objects에서 폼 처리 관련속성들
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
-ep21) 장고폼
+ep21) 장고폼 Form
+
++ 장고를 더욱 장고스럽게 만들어주는 주옥같은 틀
++ Model클래스와 유사하게 form클래스를 정의
++ 주요 역할 : 커스텀 form클래스를 통해..
+   -> 입력폼 HTML 생성 : .as_table(), as_p(), as_ul()기본 제공
+   -> 입력폼 값 검증(validation) 및 값 변환
+   -> 검증을 통과한 값들을 사전타입으로 제공
+                          => cleaned_data 로제공받는다.
+
+front - form  <=> model - db
+
+
+_a
+ex) post_new(request):
+      if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = Post(**self.cleaned_data)
+            post.save()
+            return redirect(post)
+      else:
+        form = PostForm()
+
+      return render(request, 'blog/post_form.html', {
+            'form': form
+        })
+//**
+__
 
 
 
-
-
-
-
-
-
-
-
+1) 폼클래스 정의 dojo에서 실습을 진행
+  1. 모델을 일단 만든다.
+  2. forms.py를 만든다.
+  3. 유효성 검사추가
+  4. 뷰함수에서 폼 인스턴스 생성
 
 
 
