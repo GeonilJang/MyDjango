@@ -5,3 +5,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
+        widgets = {
+            #커스텀 가능
+            'user_agent':forms.HiddenInput,
+        }

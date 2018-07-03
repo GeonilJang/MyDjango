@@ -5,6 +5,7 @@ from .models import Product, After
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['id','user','title','content','update_at']
+    list_display_links = ['title']
 
 
 @admin.register(After)

@@ -25,4 +25,8 @@ class PostForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title','content']  #전체 필드 지정. 혹은 list 로 읽어올 필드면 지정
+        fields = ['title','content', "user_agent"]  #전체 필드 지정. 혹은 list 로 읽어올 필드면 지정
+        widgets = {
+            #커스텀 가능
+            'user_agent':forms.HiddenInput,
+        }

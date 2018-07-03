@@ -11,6 +11,7 @@ class Product(models.Model):
     user= models.CharField(max_length=20, verbose_name="작성자", help_text="작성자를 입력해 주세요.")
     title = models.CharField(max_length=100, verbose_name="제목", help_text="포스팅 제목을 입력해주세요. 최대 100자 내외.", validators=[len_validator])
     content = models.TextField(verbose_name="내용")
+    user_agent = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 

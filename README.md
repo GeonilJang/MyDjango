@@ -1101,16 +1101,29 @@ ep23) 폼유효성 검사
 form.is_valid(): 유효성 검사 시작한다
 
 
+########################################################################################################
+########################################################################################################
+ep24) 폼커스텀 렌더
+forms.py 안에
 
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title','content', "user_agent"]  #전체 필드 지정. 혹은 list 로 읽어올 필드면 지정
+        widgets = {
+            #커스텀 가능
+            'user_agent':forms.HiddenInput,
+        }
 
+_마크업 하는 방법
+1) {{form.title}} 위젯 렌더링
+   {{form.title.label_tag}} 를 하게되면 테그를 가져올 수 있다 한땀 한땀 커스텀 할 때 사용할 수있다.
+   {{form.title.help_text}} 를 통하여 적어둔 헬프텍스트도 가져올 수 있다.
 
+2) 추천 ) 히든필드 따로 비저블 필드 따로 순회 할 수 있다.
 
-
-
-
-
-
-
+{% for field in form.hidden.fields %}
+{% for field in form.visible_fields %}
 
 
 

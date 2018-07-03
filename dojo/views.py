@@ -35,7 +35,7 @@ def post_new(request):
             post.ip = request.META['REMOTE_ADDR']
             post.save()
 
-            return redirect('/dojo/') #namespace:name
+            return redirect('/dojo/new') #namespace:name
     else:
         form = PostForm()
     return render(request, 'dojo/post_form.html',{

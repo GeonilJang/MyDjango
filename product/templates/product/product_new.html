@@ -16,4 +16,9 @@
       </div>
     </div>
     </div>
+    
+    <script type="text/javascript">
+      let dom = document.getElementById('{{ form.user_agent.id_for_label}}');
+      dom.value = navigator.userAgent
+    </script>
     {%endblock%}
