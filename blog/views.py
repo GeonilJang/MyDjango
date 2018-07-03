@@ -4,7 +4,8 @@ from django.db.models import Q
 from django.http import Http404
 from django.conf import settings
 from .forms import PostForm
-# Create your views here.
+from django.contrib import messages
+
 def post_list(request):
 
     qs = Post.objects.all()
@@ -39,6 +40,7 @@ def post_new(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save()
+            messages.info(request, "새 글이 등록되었습니다.")
             return redirect(post)
     else:
         form = PostForm()
@@ -52,6 +54,7 @@ def post_edit(request, id):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
+            messages.success(request, "포스팅을 수정했습니다.")
             return redirect(post)
     else:
         form = PostForm(instance=post)

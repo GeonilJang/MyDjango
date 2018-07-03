@@ -15,6 +15,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+      ordering = ['-id'] #id로 내림 차순 정렬을 기본으로 정렬하겠다. [안에 여러 조건을 줄 수는 있지만 1가지 조건을사용하는 것을 추천]
+      
     def __str__(self):
         return self.title
 

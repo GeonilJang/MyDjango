@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse, JsonResponse
-
+from django.views.generic import ListView
 
 import os
 #지정경로 장고 이용하여 정의하기

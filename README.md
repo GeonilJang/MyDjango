@@ -1127,6 +1127,144 @@ _마크업 하는 방법
 
 
 
+!!!!!!!!!아래와 같이 꾸며보았다!!!!!!!!!!!!!!
+
+{% extends "product/layout.html" %}
+
+{%block content%}
+
+
+
+<div class="container" style="margin-top:100px;">
+<div class="row">
+  <div class="col-sm-12">
+    <form class="" method="post">
+      {% csrf_token %}
+
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+          {{error}}
+        </div>
+      {% endfor%}
+
+      {% for field in form.hidden_fields %}
+        {{field}}
+      {% endfor%}
+
+      {% for field in form.visible_fields %}
+            <div class="form-group">
+                  {{ field.label_tag}}
+                  <div class="col-sm-10">
+                    {{field}}
+                    {% if field.help_text %}
+                      <p class="help-block">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors%}
+                      <div class="alert alert-danger">
+                        {{error}}
+                      </div>
+                    {% endfor%}
+                  </div>
+            </div>
+      {% endfor%}
+      <input type="submit" value="저장" class="btn btn-primary">
+
+    </form>
+  </div>
+</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+  $(function(){
+    $('.form-group label').addClass('col-sm-2');
+    $('.form-group input, .form-group textarea').addClass('form-control');
+  })
+  let dom = document.getElementById('{{ form.user_agent.id_for_label}}');
+  dom.value = navigator.userAgent
+</script>
+
+{% endblock %}
+
+__
+
+
+부트스트렙 3설치
+pip install django-bootstrap3
+setting에 추가 "bootstrap3",
+아래 처럼 변경
+_{% extends 'dojo/layout.html'%}
+{% block content %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h1>Post Form</h1>
+      <form action="" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form%}
+        <input type="submit" class="btn btn-primary" value="작성">
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  let dom = document.getElementById('{{ form.user_agent.id_for_label}}');
+  dom.value = navigator.userAgent
+</script>
+
+
+{% endblock %}
+__
+
+
+########################################################################################################
+ep25) Message Framwork
+
+1) 1회성 메세지를 담는 용도.
+HttpRequest 인스턴스를 통해 메세지를 남길 수 있음.
+메세지는 1회 노출 되고, 사라집니다. 새로고침하면 보여지지 않음.
+"저장되었습니다." "로그인되었습니다."
+
+--> 세션저장
+
+2) Message Levels를 통한 메세지 분류
+
+파이썬 로깅 모듈과 유사. 레벨 별로 필터링이 가능하며, 템플릿에서 다른 스타일로 노출이 가능 (5단계 레벨)
+debug : 디폴트 설정 상으로 메세지를 남겨도 무시
+info
+success
+WARNING
+error
+
+ex) 메세지 등록코드
+
+from django.contrib import messages
+
+def post_new(request):
+ ##중량
+ if form.is_valid():
+  post = form.save()
+  #1 방법) messages.add_message(request, message.INFO, "새 글이 등록 되었습니다.").
+  #2 방법) messages.info(request, "새 글이 등록되었습니다.") 추천
+  return redirect(post)
+
+후!! 메세지 소비 코드를 작성해주어야 합니다.
+대게 소비코드는 폼에 작성을 해줍니다. -> layout.html 에 작성합니다.
+
+
+{% if messages %}
+  {% for message in messages%}
+    {{message.tags}} {# 메세지 레벨#}
+    {{message.message}} {# 실제메세지 내용#}
+  {% endfor%}
+{% endif%}
 
 
 
