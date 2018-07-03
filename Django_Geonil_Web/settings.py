@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'blog',
     'dojo',
     'account',
+    'product',
 
 ]
 

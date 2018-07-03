@@ -1,0 +1,50 @@
+{% extends "product/layout.html" %}
+
+{%block content%}
+<div class="container" style="margin-top:100px;">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>작성글 확인</h1>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>번호</th><th>제목</th><th>내용</th><th> </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{element.id}}</td><td>{{element.title}}</td><td>{{element.content|linebreaks}}</td><td><a href="{% url "product:product_edit" element.id %}">수정하기</a></td>
+          </tr>
+          <tr>
+          </tr>
+        </tbody>
+      </table>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3>댓글</h3>
+            <table class="table table-hover">
+              {% for comment in element.after_set.all %}
+              <tr>
+                <td>작성자 : {{comment.author}}</td>
+                <td>{{comment.message}}</td>
+                <td><small>작성시간 : {{comment.update_at}}</small></td>
+                <td><small>해당글 : {{comment.product}}</small></td>
+              </tr>
+              {% endfor%}
+            </table>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 pull-right">
+            <a href="{%url "product:product_list"%}" class="btn btn-primary">리스트</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

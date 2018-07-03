@@ -13,7 +13,6 @@ def post_list(request):
         qs = qs.filter( Q(title__icontains=q) | Q(content__icontains=q) )
                             # form 테그를 이용하여 파라미터를 던져서 해당 주소로 갈때 실행 되는 함수가
                              #이 함수 이기 때문에 render와 동일한 장소에 쿼리 처리 를 보여주고 있구만.
-
     return render(request, 'blog/post_list.html',{
         'post_list':qs,
     })
