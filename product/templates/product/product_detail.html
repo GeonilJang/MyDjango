@@ -1,4 +1,6 @@
 {% extends "product/layout.html" %}
+<!-- 3번째방법구현 -->
+{%load imagekit%}
 
 {%block content%}
 <div class="container" style="margin-top:100px;">
@@ -12,6 +14,19 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            {% if element.photo %}
+
+            {% thumbnail "100x100" element.photo%}
+            <img src="{{ element.photo_thubnail.url }}" alt="as" style="max-width:50%;max-height:50%;">
+
+            {% thumbnail "100x100" element.photo as thum%}
+            <img src="{{thum.url}}" width="{{thum.width}}" height="thum.height" alt="">
+
+            {% thumbnail "100x100" element.photo -- style="" onclick="alert('Hello')" class="" %}
+
+            {% endif %}
+          </tr>
           <tr>
             <td>{{element.id}}</td><td>{{element.title}}</td><td>{{element.content|linebreaks}}</td><td><a href="{% url "product:product_edit" element.id %}">수정하기</a></td>
           </tr>

@@ -1266,9 +1266,7 @@ def post_new(request):
   {% endfor%}
 {% endif%}
 
-########################################################################################################
-########################################################################################################
-########################################################################################################
+
 ########################################################################################################
 ########################################################################################################
 ep26) 스텟틱 파일 관리하는 방법  
@@ -1291,6 +1289,157 @@ STATIC_URL ='/static/' #항상 /로 끝이 나도록 설정
 STATIC_ROOT = os.path.join(BASE_DIR, '..','staticfiles')
 
 <!-- <link rel="stylesheet" href="/static/style.css"> -->
+
+########################################################################################################
+ep27) 미디어파일(유저가 업로드한 파일)
+뷰에는 HttpRequest.FILES 를 통해 파일이 전달 되고, 뷰에서는 이를 적절히 검증한 후, settings.MEDIA_ROOT 디렉토리 하단에 저장
+settings.py 예시
+
+MEDIA_URL= '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, ',..','media')
+
+FileField/ImageField
+파일은 settings.MEDIA_ROOT 경로에 저장하며, db필드에는 setting.MEDIA_ROOT내 저장된 하위 경로를 저장
+
+pip install pillow
+
+########################################################################################################
+ep28) 이미지 썸네일
+
+jpeg : 손실압축 포맷 파일 크기가 작아 웹에서 널리 사용
+ + 압축률을 옾이면 파일 크기는 더 작아지나 이미지 품질은 떨어짐 80% 적정
+ + 투명채널은 지원되지 않으며, 사진 이미지에 유용
+
+png : 투명채널 지원하며, 24비트 색상 (2^24)지원
+ + 투명이 필요하거나, 문자가 있는 이미지는 png 포맷이 유리
+
+gif : 256생까지 지원. 애니메이션 지원
+
+
+이미지 용량 줄이기
++ 네트워크 트랙픽 = 돈
++ 이미지 용량이 크면, 유저 다운로드에도 더 긴 시간이 소요
++ 가급적 jpg 포맷 사용
+  -> 투명채널이 필요하지 않고 문자가 없는 이미지
+  -> 글자가 많은 이미지는 jpg 포맷을 쓰면, 글자가 뭉개짐.
++ 메타데이터는 이미지 노출과 직접적인 관련성이 없으므로, 제거
++ 서비스에 필요한 이미지 크기로 리사이징
+
+
+
+파이썬 이미지 처리 라이브러리
++ PIL :
++ pillow :
++ PILKIT :
++ Wand :
+
+
+
+_import requests
+image_binary = requests.get(url).content
+
+with open('image.jpg', "wb") as f:
+    f.write(image_binary)
+
+from PIL import Image
+image = Image.open("image.jpg")
+image__
+
+
+_from pilkit.processors import Thumbnail
+processor = Thumbnail(width=300, height=300)
+thum_image = processor.process(image)
+thum_image
+thum_image.save("thumb-300x300.png")
+for quality in list([100,80]):
+    thum_image.save("thumb-300x300-{}.jpg".format(quality), quality=quality)__
+
+
+
+
+########################################################################################################
+ep29) 이미지 필드 썸네일
+
+* django-imagekit 페키지 추천
+pip install pillow
+pip install django-imagekit
+
+_INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    "debug_toolbar",
+    "imagekit",  <---- 추가
+    'django_extensions',
+    "bootstrap3",
+    'blog',
+    'dojo',
+    'account',
+    'product',
+
+]__
+
+
+템플릿 단에 서 처리하는 방법 추천 방법
+
+
+
+
+
+
+########################################################################################################
+ep29) 위젯 제대로 알기
+
++ ui 입력 요소
++ class Widget(arrts=None)
+  -> attr: 해당 tag의 property 지-
+  -> self.attrs 를 통해 접근가능
+
+
+from django import forms
+name = forms.TextInput(attrs = {'size':10,'title':'Your name',})
+name.render('name','value',attrs=None)
+* <input title="Your name" type="text" name="name" value="A name" size="10" required/>
+
+
+위젯 사용방법
+
+방법1_)  form field 정의 시에 widget 을 통해 지정
+class PostForm(forms.Form):
+  lnglat = forms.CharField(max_length=50, widget=NaverMapPointWidget())
+
+
+방법2_) modelform class 내의 meta 내 widgets 를통해 widget만 변경
+class PostForm(forms.ModelForm):
+  class Meta:
+    widget = {
+      'lnglat': NaverMapPointWidget(),
+    }
+
+
+
+_커스텀 위젯
+위젯을 변경한다고 해서, 서버로 전달되는 값이 변경되는 것은 아님.
+단지 유저에세 ui 편의성을 제공
+
+만드는 법
+django.forms.Widget.render멤버함수 재정의를 통해, 추가 HTML/CSS/JavaScript를 정의
+ex) form.TextInput 이나 forms.HiddenInput기반에서 네이버 맴 위젯, 다음 맵 위젯, 구글 맵 위젯
+
+__
+
+
+
+
+
+
+
+
+
+
 
 
 

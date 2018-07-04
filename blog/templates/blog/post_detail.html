@@ -1,4 +1,6 @@
 {% extends "blog/layout.html" %}
+<!-- 3번째방법구현 -->
+{%load imagekit%}
 
 {% block title %}
   {{post.title}}
@@ -10,6 +12,22 @@
   <div class="row">
     <div class="col-sm-12">
       <h2>{{post.title}}</h2>
+      <!-- <img src="/media/{{ post.photo }}" alt="as" style="max-width:100%;"> -->
+      {% if post.photo %}
+      <!-- <img src="{{ post.photo_thubnail.url }}" alt="as" style="max-width:100%;"> -->
+      <img src="{{ post.photo.url }}" alt="" style="max-width:100%;">
+
+      {% thumbnail "100x100" post.photo %}
+      <img src="{{ post.photo.url }}" alt="as" style="max-width:50%;max-height:50%;">
+
+      {% thumbnail "100x100" post.photo as thum%}
+      <img src="{{thum.url}}" width="{{thum.width}}" height="thum.height" alt="">
+
+      {% thumbnail "100x100" post.photo -- style="" onclick="alert('Hello')" class="" %}
+
+<!-- 3번째방법구현 -->
+      {% thumbnail "100x100" post.photo%}
+      {% endif %}
       <p>{{post.content|linebreaks}}</p>
       <small>by {{post.user}}</small>
       <small>at {{post.updated_at}}</small>
