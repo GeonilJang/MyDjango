@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 import os
@@ -94,32 +94,36 @@ def post_edit(request, id):
 스텝3
 """
 
+#
+# class DetailView():
+#     def __init__(self, model):
+#         self.model  = model
+#
+#     def get_object(self, *args, **kwargs):
+#         return get_object_or_404(self.model, id=kwargs['id'])
+#
+#     def get_template_name(self):
+#         return '{}/{}_detail.html'.format(self.model._meta.app_label, self.model._meta.model_name)
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         return render(request, self.get_template_name(), {
+#             self.model._meta.model_name: self.get_object(*args, **kwargs),
+#         })
+#
+#     @classmethod
+#     def as_view(cls, model):
+#         def view(request, *args, **kwargs):
+#             self = cls(model)
+#             return self.dispatch(request, *args, **kwargs)
+#         return view
+#
+# post_detail = DetailView.as_view(Post)
 
-class DetailView():
-    def __init__(self, model):
-        self.model  = model
+"""
+스텝4
+"""
 
-    def get_object(self, *args, **kwargs):
-        return get_object_or_404(self.model, id=kwargs['id'])
-
-    def get_template_name(self):
-        return '{}/{}_detail.html'.format(self.model._meta.app_label, self.model._meta.model_name)
-
-    def dispatch(self, request, *args, **kwargs):
-        return render(request, self.get_template_name(), {
-            self.model._meta.model_name: self.get_object(*args, **kwargs),
-        })
-
-    @classmethod
-    def as_view(cls, model):
-        def view(request, *args, **kwargs):
-            self = cls(model)
-            return self.dispatch(request, *args, **kwargs)
-        return view
-
-post_detail = DetailView.as_view(Post)
-
-
+post_detail = DetailView.as_view(model=Post, pk_url_kwarg='id')
 
 
 
