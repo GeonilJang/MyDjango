@@ -64,16 +64,28 @@ def post_edit(request, id):
 """
 스텝1 함수기반뷰
 """
-def post_detail(request, id):
-    post = get_object_or_404(Post, id=id)
-    return render(request, 'dojo/post_detail.html', {
-        "post":post
-    })
+# def post_detail(request, id):
+#     post = get_object_or_404(Post, id=id)
+#     return render(request, 'dojo/post_detail.html', {
+#         "post":post
+#     })
 
 
+"""
+스텝2
+"""
 
+def generic_view_fn(model):
+    def view_fn(request, id):
+        instance = get_object_or_404(model, id=id)
+        instance_name = model._meta.model_name
+        template_name = '{}/{}_detail.html'.format(model._meta.app_label, instance_name)
+        return render(request , template_name,{
+            instance_name : instance,
+        })
+    return view_fn
 
-
+post_detail = generic_view_fn(Post)
 
 
 
