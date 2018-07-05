@@ -1,6 +1,6 @@
 from django.views.generic import View, TemplateView
 from django.http import HttpResponse, HttpRequest
-
+from django.shortcuts import render, redirect, get_object_or_404
 
 class PostList1(View):  # 내가 만든 string html을 렌더할때
     def get(self, request):
