@@ -11,13 +11,17 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>번호</th><th>작성자</th><th>내용</th><th>작성일</th><th>수정일</th>
+                <th>번호</th><th>작성자</th><th>제목</th><th>작성일</th><th>수정일</th>
               </tr>
             </thead>
             <tbody>
               {% for ele in users%}
               <tr>
-                <td>{{ele.id}}</td><td>{{ele.user}}</td><td><a href="{%url "product:product_detail" ele.id %}">{{ele.content|linebreaks}}</a></td><td>{{ele.created_at}}</td><th>{{ele.update_at}}</th>
+                <td>{{ele.id}}</td>
+                <td>{{ele.user}}</td>
+                <td>
+                  <a href="{%url "product:product_detail" ele.id %}">{{ele.title|linebreaks}}</a>
+                </td><td>{{ele.created_at}}</td><th>{{ele.update_at}}</th>
               </tr>
               {% endfor%}
             </tbody>

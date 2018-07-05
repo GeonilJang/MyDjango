@@ -11,6 +11,17 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
 
     <title>{%block title%}{%endblock%}</title>
+    <script type="text/javascript">
+    {% if user.is_authenticated %}
+        window.onload = function(){
+          location1 = location.href
+          if(location1.match("login")){
+        
+
+          }
+        }
+    {% endif %}
+    </script>
   </head>
   <body class="page-legacybootstrap?theme=0">
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
@@ -25,8 +36,13 @@
             <li class="nav-item"><a class="nav-link" href="{%url "product:product_list"%}">Product</a></li>
           </ul>
           <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="">회원가입</a></li>
-            <li class="nav-item"><a class="nav-link" href="">로그인</a></li>
+            {% if not user.is_authenticated %}
+              <li id="log" class="nav-item"><a class="nav-link" href="{% url "signup"%}">회원가입</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url "login" %}?next={{request.path}}">로그인</a></li>
+            {% else %}
+              <li id="out" class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url "logout" %}?next={{request.path}}">로그아웃</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>

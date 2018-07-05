@@ -1443,6 +1443,152 @@ ep30) cbv 제대로 알기
 + 장고 기본CBV패키지 위치: django.views.generic
   cbv는 범용적으로 쓸 뷰
 
+views.py 에서 확인 가능합니다.
+
+
+_ListView
+GET 요청 지정 모델에 대한 전체 목록을 조회
++ paginate_by 옵션 : 페이지당 갯수 지정
++ 디폴트 템플릿 경로 : "앱이름/모델명소문자_list.html"
++ 디폴트 context object name : "모델명 소문자_list"
+ ex) post_list, comment_list, tag_list__
+
+
+########################################################################################################
+
+ep32) 사용자 인증 이론
+
+
+회원가입 로그인 로그아웃 기능
+관련 디폴트 settings
+
+LOGIN_URL = '/accounts/login'
+  -기본 로그인 페이지 URL을 지정
+  -login_required 장식자 등에 의해서 사용 -> 뷰에 적용할 것임.
+
+
+LOGIN_REDIRECT_URL = '/accounts/profile'
+  -로그인 완료 후에 next인자가 지정되면 해당 url로 페이지이동
+  -next인자가 없으며 본 url 로 이동
+
+
+LOGOUT_REDIRECT_URL = None
+  -로그아웃 완료 후에
+  - next_page 인자가 지정되면 next_page url로 페이지 이동
+  - next_page 인자가 없으며 LOGOUT_REDIRECT_URL이 지정되었을 경우 해당 url로 이동
+  - next_page 인자가 지정되지 않고 LOGOUT_REDIRECT_URL이 None일 경우
+    redirect를 수행하지 않고  'registration/logged_out.html' 렌더링은
+
+
+AUTH_USER_MODEL = 'auth.User'
+  - 인증에 사용할 커스텀 User 모델 지정, '앱이름.모델'
+
+
+
+AbstractUser 클래스, 주요속성/멤버함수
+
+.is_authenticated -로그인 여부 (property) True False
+.is_anonymous -로그아웃 여부 (property)
+
+.set_password(raw_password) - 지정 암호를 암호화해서 password필드에 저장.save함수를 호출하진 않습니다.
+.check_password(raw_password) - 저장된 암호가 맞는 지 여부
+.set_unusable_password() - 로그인 불가 암호로 세팅
+.has_unusable_password() - 로그인 불가 암호 설정 여부
+                  -> 로그인 불가 암호로 세팅한다는 것의 의미
+                     - 암호를 통한 로그인을 허용하지 않겠다.
+                     - 외부 서비스 인증에 의한 유저일 경우
+                       -> 주로 django-allauth 라이브러리나 python-social-auth라이브러리를 통해 외부 서비스 인증연동
+
+
+
+
+_User 모델 클래스 획득하는 방법
+방법1) 직접 user 모델 import 좋은 방법이 아닙니다.
+
+user모델클래스가 변졍될 수 있기 때문에
+방법2)! from django.contrib.auth import get_user_model
+User = get_user_model()
+User.object.all()
+__
+
+
+User 모델에서는
+이름 아이디 비번 정보만 입력할 수 있기 때문에 추가 속성을 정의하고 싶다면
+
+방법1 ) profile 모델을 만들고 user모델과 1:1 관계매핑(추천)
+방법2 ) Custom User Model만들기
+  django.contrib.auth.models.AbstractUserㅅ 상속
+  settings.AUTH_USER_MODEL으로 지정 (디폴트 auth.User)
+
+
+
+
+########################################################################################################
+########################################################################################################
+ep33) 사용자 인증 코드 구현
+
+
+UserCreationForm : 회원가입
+AuthonticationForm : 로그인
+
+
+
+
+########################################################################################################
+########################################################################################################
+ep33) 사용자 인증 커스텀
+
+
+UserCreationForm : 회원가입
+AuthonticationForm : 로그인
+
+
+
+########################################################################################################
+########################################################################################################
+ep34~35) 웹서비스, 각 요청 반응속도에서의 병목
+ep9언급
+
+db단/ 파이썬단 조인 을 통한 조회쿼리 성능향상
+
+
+ep34) 웹서비스, 각 요청 반응속도에서의 병목
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

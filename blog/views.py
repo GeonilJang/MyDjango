@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Comment
 from django.db.models import Q
 from django.http import Http404
 from django.conf import settings
@@ -8,7 +8,7 @@ from django.contrib import messages
 
 def post_list(request):
 
-    qs = Post.objects.all()
+    qs = Post.objects.all().prefetch_related('tag_set', 'comment_set')
     q = request.GET.get('q','')  #-> 해당 함수 호출 될 때 파라미터 q에 해당 하는 값이 있다면 값을 가져와라
     if q:
         qs = qs.filter( Q(title__icontains=q) | Q(content__icontains=q) )
@@ -60,4 +60,12 @@ def post_edit(request, id):
         form = PostForm(instance=post)
     return render(request, 'blog/post_form.html',{
         "form":form,
+    })
+
+
+def comment_list(request):
+    # comment_list = Comment.objects.all()
+    comment_list = Comment.objects.all().select_related('post')
+    return render(request, 'blog/comment_list.html', {
+        'comment_list' : comment_list,
     })

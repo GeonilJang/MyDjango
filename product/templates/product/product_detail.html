@@ -28,7 +28,7 @@
             {% endif %}
           </tr>
           <tr>
-            <td>{{element.id}}</td><td>{{element.title}}</td><td>{{element.content|linebreaks}}</td><td><a href="{% url "product:product_edit" element.id %}">수정하기</a></td>
+            <td>{{element.id}}</td><td>{{element.title}}</td><td>{{element.content|linebreaks}}</td><td><a href="{% url "product:product_edit" element.pk %}" class="btn btn-primary">수정하기</a> <a href="{% url "product:product_delete" element.pk %}" class="btn btn-danger">삭제하기</a></td>
           </tr>
           <tr>
           </tr>

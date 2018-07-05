@@ -4,6 +4,6 @@ from django.conf import settings
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL) #user = models.OneToOneField(User) # 수정전 
-    phone_nuber = models.CharField(max_length=20)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL) #user = models.OneToOneField(User) # 수정전
+    phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=50)

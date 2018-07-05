@@ -21,6 +21,7 @@ class PostList1(View):  # 내가 만든 string html을 렌더할때
                 """
 
 post_list1 = PostList1.as_view()
+
 # post_list2 = PostList1.as_view()
 
 class PostList2(TemplateView): #template -> html을 렌더할 때

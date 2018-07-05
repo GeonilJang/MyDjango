@@ -2,8 +2,10 @@ from django import forms
 from .models import Post
 from Django_Geonil_Web.widgets.naver_map_point_widget import NaverMapPointWidget
 
+
+
 class PostForm(forms.ModelForm):
-    
+
     class Meta:
         model = Post
         fields = '__all__'

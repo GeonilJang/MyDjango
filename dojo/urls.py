@@ -3,8 +3,8 @@ from . import views
 from . import views_cbv
 urlpatterns = [
 
-    url(r'^(?P<id>\d+)$', views.post_detail),
-    
+    url(r'^(?P<pk>\d+)$', views.post_detail),
+
 
 
 

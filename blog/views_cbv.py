@@ -1,6 +1,15 @@
-from django.views.generic import CreateView
+from django.views.generic import CreateView,ListView,DeleteView,DetailView, UpdateView, CreateView
 from django import forms
 from .models import Post
+
+
+post_list = ListView.as_view(model=Post, paginate_by=10)
+post_detail = DetailView.as_view(model=Post)
+post_edit = UpdateView.as_view(model=Post, fields='__all__')
+post_new = CreateView.as_view(model=Post, fields='__all__')
+post_delete = DeleteView.as_view(model=Post, success_url='/blog/')
+
+
 
 """
 원래대로라면
@@ -18,4 +27,4 @@ class PostCreateView(CreateView):
     form_class = PostForm
 #success_url을 = "//" 원래 적어 줘야 하지만  제공안해주면
 
-post_new = PostCreateView.as_view()
+# post_new = PostCreateView.as_view()

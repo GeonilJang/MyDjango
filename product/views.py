@@ -2,12 +2,17 @@ from django.shortcuts import render , get_object_or_404, redirect
 from .models import Product
 from .forms import ProductForm
 from django.contrib import messages
+from django.views.generic import ListView, DetailView,DeleteView
+from django.core.urlresolvers import reverse_lazy
 # Create your views here.
 
 
 
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
+product_delete = DeleteView.as_view(model=Product, success_url=reverse_lazy('product:product_list'))
 
 def index(request):
     user_list = User.objects.all()
@@ -51,9 +56,9 @@ def product_list(request):
 
 
 
-
-def product_detail(request, id):
-    element = get_object_or_404(Product, id=id)
+# product_detail = DetailView.as_view(model=Product)
+def product_detail(request, pk):
+    element = get_object_or_404(Product, id=pk)
     return render(request, 'product/product_detail.html',{
         "element":element
     })

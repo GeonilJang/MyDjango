@@ -3,8 +3,10 @@
 {%block content%}
 <h2>{{user}}'s Profile</h2>
 <ul>
-  <li>username : {{user.username}}</li>
-  <li>useremail : {{user.email}}</li>
-  <li>user_joined : {{user.date_joined}}</li>
+  <li>아이디 : {{user.username}}</li>
+  <li>이메일 : {{user.email}}</li>
+  <li>가입일 : {{user.date_joined}}</li>
+  <li>전화번호 : {{user.profile.phone_number}}</li>
+  <li>주소 : {{user.profile.address}}</li>
 </ul>
 {%endblock%}
